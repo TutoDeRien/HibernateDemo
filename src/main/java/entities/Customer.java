@@ -2,6 +2,8 @@ package entities;
 
 import javax.persistence.*;
 import java.security.AlgorithmConstraints;
+import java.security.AllPermission;
+import java.util.List;
 
 @Entity
 @Table(name = "Client")
@@ -15,8 +17,19 @@ public class Customer {
     private String name;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Client_Facture")
+    private List<Invoice> invoices;
 
     public Customer() {
+    }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
     }
 
     public Address getAddress() {
@@ -45,10 +58,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address=" + address +
-                '}';
+        return String.format("Customer{id=%d, name='%s', address=%s, invoices=%s}", id, name, address, invoices);
     }
 }
